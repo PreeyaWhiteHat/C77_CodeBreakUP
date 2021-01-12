@@ -1,0 +1,247 @@
+1. run expo init BookSanta
+2. create screens folder , inside it create WelComeScreen.js file
+
+------------------------------------------
+
+Step 1
+  
+import React, { Component } from 'react';
+import { View,  Text  } from 'react-native';
+
+export default class WelcomeScreen extends Component {
+    render(){
+        return(
+            
+        )
+    }
+}
+--------------------------------------------
+step 2
+
+In App.js
+
+import WelcomeScreen from './screens/WelcomeScreen';
+
+export default function App() {
+  return (
+    <WelcomeScreen/>
+  );
+}
+------------------------------------------------
+
+Step 3
+In welcomeScreen.js
+
+  <Text>Hello</Text>
+
+---------------------------------------------
+step 4
+
+constructor(){
+    super()
+    this.state={
+      emailId : '',
+      password: ''
+    }
+  }
+
+<View style={styles.container}>
+        <View style={styles.profileContainer}>          
+          <Text style={styles.title}>Book Santa</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TextInput
+          style={styles.loginBox}
+          placeholder="example@booksanta.com"
+          placeholderTextColor = "#ffff"
+          keyboardType ='email-address'
+          onChangeText={(text)=>{
+            this.setState({
+              emailId: text
+            })
+          }}
+        />
+
+        <TextInput
+          style={styles.loginBox}
+          secureTextEntry = {true}
+          placeholder="password"
+          placeholderTextColor = "#ffff"
+          onChangeText={(text)=>{
+            this.setState({
+              password: text
+            })
+          }}
+        />
+
+    </View>
+      </View>
+
+-----------------------------------------------
+step 5
+ 
+ <TouchableOpacity
+            style={[styles.button,{marginBottom:20, marginTop:20}]}
+           // onPress = {()=>{this.userLogin(this.state.emailId, this.state.password)}}
+            >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+           // onPress={()=>{this.userSignUp(this.state.emailId, this.state.password)}}
+            >
+            <Text style={styles.buttonText}>SignUp</Text>
+  </TouchableOpacity>
+
+const styles = StyleSheet.create({
+    container:{
+      flex:1,
+      backgroundColor:'#F8BE85'
+    },
+    profileContainer:{
+      flex:1,
+      justifyContent:'center',
+      alignItems:'center',
+    },
+    title :{
+      fontSize:65,
+      fontWeight:'300',
+      paddingBottom:30,
+      color : '#ff3d00'
+    },
+    button:{
+        width:300,
+        height:50,
+        justifyContent:'center',
+        alignItems:'center',
+        borderRadius:25,
+        backgroundColor:"#ff9800",
+        shadowColor: "#000",
+        shadowOffset: {
+           width: 0,
+           height: 8,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 10.32,
+        elevation: 16,
+      },
+      buttonText:{
+        color:'#ffff',
+        fontWeight:'200',
+        fontSize:20
+      },
+      buttonContainer:{
+        flex:1,
+        alignItems:'center'
+      },
+loginBox:{
+    width: 300,
+    height: 40,
+    borderBottomWidth: 1.5,
+    borderColor : '#ff8a65',
+    fontSize: 20,
+    margin:10,
+    paddingLeft:10
+  },
+})
+
+----------------------------------------------
+step 6
+
+1)Create Firestore database BookSanta
+
+2)click on SignIn, Email/Password enable
+
+3)Create users
+
+4)go to project settings , copy SDK
+
+5) create config.js , 
+
+  
+import firebase from 'firebase';
+require('@firebase/firestore')
+
+var firebaseConfig = {
+    apiKey: "AIzaSyC8i0iQdKCijz3HpRiMe5JI8d7Qy8OV-4Y",
+    authDomain: "booksanta-293cd.firebaseapp.com",
+    projectId: "booksanta-293cd",
+    storageBucket: "booksanta-293cd.appspot.com",
+    messagingSenderId: "356018284265",
+    appId: "1:356018284265:web:7591a9c80c80bc6a46b278"
+  };
+
+    
+firebase.initializeApp(firebaseConfig);
+
+  export default firebase.firestore();
+----------------------------------------------
+step 7 
+In welcome screen
+
+import db from '../config';
+import firebase from 'firebase';
+
+npm install firebase@7.9.0
+------------------------------------------------
+
+step 8 
+
+ userLogin = (emailId, password)=>{
+    firebase.auth().signInWithEmailAndPassword(emailId, password)
+    .then(()=>{
+      return Alert.alert("Successfully Login")
+    })
+    .catch((error)=> {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      return Alert.alert(errorMessage)
+    })
+  }
+
+  userSignUp = (emailId, password) =>{
+    firebase.auth().createUserWithEmailAndPassword(emailId, password)
+    .then((response)=>{
+      return Alert.alert("User Added Successfully")
+    })
+    .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      return Alert.alert(errorMessage)
+    });
+  }
+---------------------------------------------------
+
+Step 9
+
+npm install lottie-react-native
+--------------------------------------------
+
+step 10
+1) download json file and include it in assets folder.
+
+2)create components folder and create SantaClaus.js file
+
+3) import React from 'react';
+import LottieView from 'lottie-react-native';
+
+export default class SantaAnimation extends React.Component {
+  render() {
+    return (
+      <LottieView
+      source={require('../assets/13015-santa-claus.json')}
+      style={{width:"60%"}}
+      autoPlay loop />
+    )
+  }
+}
+
+--------------------------------
+step 11
+
+In welcomeScreen.js 
+
+import SantaAnimation from '../components/SantaClaus.js';
+
+ <SantaAnimation/>
